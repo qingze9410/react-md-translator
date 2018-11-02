@@ -4,8 +4,6 @@ import CodeMirror from 'codemirror';
 import 'codemirror/mode/jsx/jsx';
 import 'codemirror/keymap/sublime';
 import 'codemirror/addon/comment/comment';
-import './codemirror.less';
-import './style.less';
 
 export default class Editor extends Component {
   componentDidMount() {

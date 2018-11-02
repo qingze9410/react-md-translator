@@ -1,12 +1,13 @@
 {
   "name": "react-md-translator",
-  "version": "0.0.1",
-  "main": "libs/markdown/index.js",
-  "entry point": "libs/markdown/index.js",
-  "keyword":"markdown react demo",
-  "author":"qingze(136786817@qq.com)",
+  "version": "0.0.2",
+  "main": "es/index.js",
+  "entry point": "es/index.js",
+  "keyword": "markdown react demo",
+  "author": "qingze(136786817@qq.com)",
   "scripts": {
-    "dev": "babel-node devServer.js"
+    "dev": "babel-node devServer.js",
+    "trans": "babel libs -d es"
   },
   "dependencies": {
     "codemirror": "^5.41.0",
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/node": "^7.0.0",
+    "@babel/cli": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-decorators": "^7.0.0",
     "@babel/plugin-proposal-do-expressions": "^7.0.0",

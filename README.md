@@ -5,3 +5,20 @@
 ```
  npm i react-md-translator
 ```
+
+```js
+import React from 'react'
+import reactMarkdownTranslator from 'react-md-translator'
+import 'react-md-translator/style/index.less';
+
+class demo extends React.Component {
+  render() {
+    return (
+        <MarkdownTranslator>
+          {require('./test.md')}
+        </MarkdownTranslator>
+    )
+  }
+}
+
+```
