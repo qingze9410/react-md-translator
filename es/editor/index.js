@@ -39,6 +39,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var Editor =
 /*#__PURE__*/
 function (_Component) {
@@ -94,7 +96,8 @@ function (_Component) {
 }(_react.Component);
 
 exports.default = Editor;
-Editor.propTypes = {
+
+_defineProperty(Editor, "propTypes", {
   onChange: _propTypes.default.func,
   value: _propTypes.default.string
-};
+});

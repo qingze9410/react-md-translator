@@ -146,11 +146,7 @@ function (_React$Component) {
       })), _react.default.createElement("div", {
         className: "demo-block-control",
         onClick: this.blockControl.bind(this)
-      }, this.state.showBlock ? _react.default.createElement("span", null, _react.default.createElement("i", {
-        className: "el-icon-caret-top"
-      }), this.props.locale.hide) : _react.default.createElement("span", null, _react.default.createElement("i", {
-        className: "el-icon-caret-bottom"
-      }), this.props.locale.show)));
+      }, this.state.showBlock ? _react.default.createElement("span", null, this.props.locale.hide) : _react.default.createElement("span", null, this.props.locale.show)));
     }
   }]);
 

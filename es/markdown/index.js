@@ -66,11 +66,11 @@ function (_React$Component) {
     };
 
     _this.renderer.listitem = function (text) {
-      return '<li class="md-listitem">' + text + '</li>\n';
+      return "<li class=\"md-listitem\">".concat(text, "</li>");
     };
 
     _this.renderer.paragraph = function (text) {
-      return '<p class="md-paragraph">' + text + '</p>\n';
+      return "<p class=\"md-paragraph\">".concat(text, "</p>");
     };
 
     _this.renderer.heading = function (text, level, raw) {
@@ -80,8 +80,10 @@ function (_React$Component) {
 
 
       return '<h' + level + ' class="md-heading" >' + text + '</h' + level + '>\n';
-    };
+    }; // 开发自定义 marked.renderer;
 
+
+    if (_this.props.renderer) _this.renderer = _this.props.renderer;
     return _this;
   }
 
@@ -169,5 +171,6 @@ function (_React$Component) {
 exports.default = Markdown;
 
 _defineProperty(Markdown, "propTypes", {
-  dependencies: _propTypes.default.object
+  dependencies: _propTypes.default.object,
+  renderer: _propTypes.default.func
 });
