@@ -6,6 +6,12 @@ import 'codemirror/keymap/sublime';
 import 'codemirror/addon/comment/comment';
 
 export default class Editor extends Component {
+
+  static propTypes = {
+    onChange: PropTypes.func,
+    value: PropTypes.string
+  };
+
   componentDidMount() {
     const {onChange, value} = this.props;
 
@@ -35,8 +41,3 @@ export default class Editor extends Component {
     return <div className="editor" ref={ref => (this.editor = ref)}/>;
   }
 }
-
-Editor.propTypes = {
-  onChange: PropTypes.func,
-  value: PropTypes.string
-};

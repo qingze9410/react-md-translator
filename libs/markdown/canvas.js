@@ -103,13 +103,9 @@ export default class Canvas extends React.Component {
           <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
             {
               this.state.showBlock ? (
-                  <span>
-                <i className="el-icon-caret-top"/>{this.props.locale.hide}
-              </span>
+                  <span>{this.props.locale.hide}</span>
               ) : (
-                  <span>
-                <i className="el-icon-caret-bottom"/>{this.props.locale.show}
-              </span>
+                  <span>{this.props.locale.show}</span>
               )
             }
           </div>

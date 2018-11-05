@@ -8,7 +8,8 @@ import PropTypes from "prop-types";
 export default class Markdown extends React.Component {
 
   static propTypes = {
-    dependencies: PropTypes.object
+    dependencies: PropTypes.object,
+    renderer: PropTypes.func,
   };
 
   constructor(props) {
@@ -19,10 +20,10 @@ export default class Markdown extends React.Component {
       return `<table class="md-table"><thead>${header}</thead><tbody>${body}</tbody></table>`;
     };
     this.renderer.listitem = function (text) {
-      return '<li class="md-listitem">' + text + '</li>\n';
+      return `<li class="md-listitem">${text}</li>`;
     };
     this.renderer.paragraph = function (text) {
-      return '<p class="md-paragraph">' + text + '</p>\n';
+      return `<p class="md-paragraph">${text}</p>`;
     };
     this.renderer.heading = function (text, level, raw) {
       if (this.options.headerIds) {
@@ -31,6 +32,8 @@ export default class Markdown extends React.Component {
       // ignore IDs
       return '<h' + level + ' class="md-heading" >' + text + '</h' + level + '>\n';
     };
+    // 开发自定义 marked.renderer;
+    if (this.props.renderer) this.renderer = this.props.renderer;
   }
 
   componentDidMount() {
