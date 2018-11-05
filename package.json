@@ -1,6 +1,6 @@
 {
   "name": "react-md-translator",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "es/index.js",
   "entry point": "es/index.js",
   "keyword": "markdown react demo",
