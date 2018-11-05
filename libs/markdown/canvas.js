@@ -56,16 +56,23 @@ export default class Canvas extends React.Component {
       resolve({args, argv})
     }).then(({args, argv}) => {
       let code;
-      //单个class写关键部分内容
-      code = transform(`
-        class Demo extends React.Component {
-          ${value}
-        }
-        ReactDOM.render(<Demo {...context.props} />, 
-        document.getElementById('${this.playerId}'))
-      `, {
-        presets: ['react', 'stage-1']
-      }).code;
+      if (/ReactDOM\.render/.test(value)) {
+        code = transform(`
+           ${value.replace('mountNode', `document.getElementById('${this.playerId}')`)}
+        `, {
+          presets: ['react', 'stage-1']
+        }).code;
+      } else {
+        code = transform(`
+          class Demo extends React.Component {
+             ${value}
+          }
+          ReactDOM.render(<Demo {...context.props} />,
+          document.getElementById('${this.playerId}'))
+          `, {
+          presets: ['react', 'stage-1']
+        }).code;
+      }
       args.push(code);
       //render to playrId div
       new Function(...args).apply(null, argv);

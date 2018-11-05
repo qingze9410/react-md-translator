@@ -104,11 +104,18 @@ function (_React$Component) {
       }).then(function (_ref) {
         var args = _ref.args,
             argv = _ref.argv;
-        var code; //单个class写关键部分内容
+        var code;
 
-        code = (0, _babelStandalone.transform)("\n        class Demo extends React.Component {\n          ".concat(value, "\n        }\n        ReactDOM.render(<Demo {...context.props} />, \n        document.getElementById('").concat(_this2.playerId, "'))\n      "), {
-          presets: ['react', 'stage-1']
-        }).code;
+        if (/ReactDOM\.render/.test(value)) {
+          code = (0, _babelStandalone.transform)("\n           ".concat(value.replace('mountNode', "document.getElementById('".concat(_this2.playerId, "')")), "\n        "), {
+            presets: ['react', 'stage-1']
+          }).code;
+        } else {
+          code = (0, _babelStandalone.transform)("\n          class Demo extends React.Component {\n             ".concat(value, "\n          }\n          ReactDOM.render(<Demo {...context.props} />,\n          document.getElementById('").concat(_this2.playerId, "'))\n          "), {
+            presets: ['react', 'stage-1']
+          }).code;
+        }
+
         args.push(code); //render to playrId div
 
         _construct(Function, _toConsumableArray(args)).apply(null, argv);
