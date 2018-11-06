@@ -1,6 +1,6 @@
 {
   "name": "react-md-translator",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "es/index.js",
   "entry point": "es/index.js",
   "keyword": "markdown react demo",
@@ -15,8 +15,8 @@
     "prismjs": "^1.15.0",
     "prop-types": "^15.6.2",
     "babel-standalone": "^6.26.0",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0"
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
