@@ -31,10 +31,22 @@ class demo extends React.Component {
 
 ```
 
+## marked.renderer 自定义示例
+
+```js
+import marked from 'marked';
+
+const renderer = new marked.Renderer();
+renderer.table = (header, body) => {
+  return `<table class="md-table"><thead>${header}</thead><tbody>${body}</tbody></table>`;
+};
+```
+
 ## API
 
 | API          | 类型     | 描述          |
 | ------------ | ------ | ----------- |
 | dependencies | Object | demo所需要的依赖项 |
+| renderer     | Object | marked.renderer配置 |
 | children     | Markdown | markdown文件 |
 
