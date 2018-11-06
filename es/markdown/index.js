@@ -172,5 +172,5 @@ exports.default = Markdown;
 
 _defineProperty(Markdown, "propTypes", {
   dependencies: _propTypes.default.object,
-  renderer: _propTypes.default.func
+  renderer: _propTypes.default.object
 });
