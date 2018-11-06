@@ -16,15 +16,15 @@
 
 ```js
 import React from 'react'
-import reactMarkdownTranslator from 'react-md-translator'
+import ReactMarkdownTranslator from 'react-md-translator'
 import 'react-md-translator/style/index.less';
 
 class demo extends React.Component {
   render() {
     return (
-        <MarkdownTranslator>
+        <ReactMarkdownTranslator>
           {require('./test.md')}
-        </MarkdownTranslator>
+        </ReactMarkdownTranslator>
     )
   }
 }
