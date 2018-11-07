@@ -1,13 +1,12 @@
 {
   "name": "react-md-translator",
-  "version": "0.0.11",
-  "main": "lib/index.js",
-  "module": "es/index.js",
+  "version": "0.0.12",
+  "main": "es/index.js",
   "keyword": "markdown react demo",
   "author": "qingze(136786817@qq.com)",
   "scripts": {
     "dev": "babel-node devServer.js",
-    "trans": "babel es -d lib"
+    "trans": "babel libs -d es"
   },
   "dependencies": {
     "codemirror": "^5.41.0",
