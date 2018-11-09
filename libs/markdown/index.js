@@ -67,6 +67,7 @@ export default class Markdown extends React.Component {
 
         this.components.set(id, React.createElement(Canvas, Object.assign({
           name: this.constructor.name.toLowerCase(),
+          containerId: id
         }, this.props), p1));
 
         return `<div id=${id} class="demo-container"></div>`;

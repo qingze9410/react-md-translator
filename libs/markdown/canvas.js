@@ -4,12 +4,16 @@ import PropTypes from 'prop-types';
 import marked from 'marked';
 import {transform} from 'babel-standalone';
 import Editor from '../editor';
+import less from 'less';
+import prism from 'prismjs';
+import 'prismjs/components/prism-less';
 
 //代码展示容器
 export default class Canvas extends React.Component {
   static propTypes = {
     locale: PropTypes.object,
     name: PropTypes.string,
+    containerId: PropTypes.string,
     children: PropTypes.node,
     dependencies: PropTypes.object
   };
@@ -23,24 +27,59 @@ export default class Canvas extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.playerId = `${parseInt(Math.random() * 1e9).toString(36)}`;
-    this.document = this.props.children.match(/([^]*)\n?(```[^]+```)/);
-    this.description = marked(this.document[1]);
-    this.source = this.document[2].match(/```(.*)\n?([^]+)```/);
+    //坑位Id
+    this.playerId = `player-${parseInt(Math.random() * 1e9).toString(36)}`;
+    //匹配出描述
+    this.description = marked(this.props.children.match(/([^```]*)\n?(```[^]+```)/)[1]);
+    //分类匹配出less/js/jsx/css
+    this.props.children.replace(/```(.*?)\n+([^```]+)\n+```/ig, (markdown) => {
+      const [all, type, code] = markdown.match(/```(.*)\n?([^]+)```/);
+      switch (type) {
+        case 'js':
+        case 'jsx':
+          this.jsCode = code;
+          break;
+        case 'less':
+          this.lessCodeSource = marked(all);
+          less.render(`
+            #${this.playerId} {
+              ${code}
+            }
+          `, (e, compiledCode) => {
+            this.lessCode = compiledCode.css;
+          });
+          break;
+        case 'css':
+          this.cssCodeSource = marked(all);
+          less.render(`
+            #${this.playerId} {
+              ${code}
+            }
+          `, (e, compiledCode) => {
+            this.cssCode = compiledCode.css;
+          });
+          break;
+        default:
+          break;
+      }
+    });
 
     this.state = {
-      showBlock: false
+      showBlock: false,
     };
   }
 
   componentDidMount() {
-    this.renderSource(this.source[2]);
+    this.renderSource(this.jsCode);
   }
 
   blockControl() {
     this.setState({
-      showBlock: !this.state.showBlock
+      showBlock: !this.state.showBlock,
+    }, () => {
+      if (this.state.showBlock && (this.lessCodeSource || this.cssCodeSource)) {
+        prism.highlightAllUnder(document.getElementById(`${this.props.containerId}`));
+      }
     });
   }
 
@@ -76,7 +115,7 @@ export default class Canvas extends React.Component {
       args.push(code);
       //render to playrId div
       new Function(...args).apply(null, argv);
-      this.source[2] = value;
+      this.jsCode = value;
     }).catch((err) => {
       if (process.env.NODE_ENV !== 'production') {
         throw err;
@@ -101,9 +140,13 @@ export default class Canvas extends React.Component {
                     )
                   }
                   <Editor
-                      value={this.source[2]}
+                      value={this.jsCode}
                       onChange={code => this.renderSource(code)}
                   />
+                  {this.lessCodeSource && (
+                      <div className="style-block" dangerouslySetInnerHTML={{__html: this.lessCodeSource}}/>)}
+                  {this.cssCodeSource && (
+                      <div className="style-block" dangerouslySetInnerHTML={{__html: this.cssCodeSource}}/>)}
                 </div>
             )
           }
@@ -116,6 +159,8 @@ export default class Canvas extends React.Component {
               )
             }
           </div>
+          {this.lessCode && (<style>{this.lessCode}</style>)}
+          {this.cssCode && (<style>{this.cssCode}</style>)}
         </div>
     );
   }

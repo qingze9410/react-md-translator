@@ -147,7 +147,8 @@ function (_React$Component) {
           var id = offset.toString(36);
 
           _this2.components.set(id, _react.default.createElement(_canvas.default, Object.assign({
-            name: _this2.constructor.name.toLowerCase()
+            name: _this2.constructor.name.toLowerCase(),
+            containerId: id
           }, _this2.props), p1));
 
           return "<div id=".concat(id, " class=\"demo-container\"></div>");

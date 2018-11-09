@@ -16,6 +16,13 @@ render(){
   )
 }
 ```
+
+```css
+h4{
+  font-size: 14px;
+}
+```
+
 :::
 
 
@@ -36,5 +43,11 @@ class Demo extends React.Component{
 }
 
 ReactDOM.render(<Demo {...context.props}/>,mountNode)
+```
+
+```less
+h4{
+  font-size: 32px;
+}
 ```
 :::

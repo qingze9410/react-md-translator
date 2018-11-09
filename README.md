@@ -50,3 +50,9 @@ renderer.table = (header, body) => {
 | renderer     | Object | marked.renderer配置 |
 | children     | Markdown | markdown文件 |
 
+
+## updates
+
+- 2018年11月09日
+    - 新增`less`/`css` demo内容块的解析
+ 
