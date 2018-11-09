@@ -82,7 +82,7 @@ function (_React$Component) {
 
     _this.description = (0, _marked.default)(_this.props.children.match(/([^```]*)\n?(```[^]+```)/)[1]); //分类匹配出less/js/jsx/css
 
-    _this.props.children.replace(/```(.*?)\n+([^```]+)\n+```/ig, function (markdown) {
+    _this.props.children.replace(/(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/ig, function (markdown) {
       var _markdown$match = markdown.match(/```(.*)\n?([^]+)```/),
           _markdown$match2 = _slicedToArray(_markdown$match, 3),
           all = _markdown$match2[0],
@@ -176,8 +176,6 @@ function (_React$Component) {
         args.push(code); //render to playrId div
 
         _construct(Function, _toConsumableArray(args)).apply(null, argv);
-
-        _this3.jsCode = value;
       }).catch(function (err) {
         if (process.env.NODE_ENV !== 'production') {
           throw err;
