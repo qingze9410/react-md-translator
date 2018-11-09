@@ -32,7 +32,7 @@ export default class Canvas extends React.Component {
     //匹配出描述
     this.description = marked(this.props.children.match(/([^```]*)\n?(```[^]+```)/)[1]);
     //分类匹配出less/js/jsx/css
-    this.props.children.replace(/(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/ig, (markdown) => {
+    this.props.children.replace(/(`{3})([^`]|[^`][\s\S]*?[^`])\1(?!`)/ig, (markdown) => {
       const [all, type, code] = markdown.match(/```(.*)\n?([^]+)```/);
       switch (type) {
         case 'js':
