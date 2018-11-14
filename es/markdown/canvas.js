@@ -89,7 +89,7 @@ function (_React$Component) {
           type = _markdown$match2[1],
           code = _markdown$match2[2];
 
-      switch (type) {
+      switch (type.trim()) {
         case 'js':
         case 'jsx':
           _this.jsCode = code;
