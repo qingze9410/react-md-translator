@@ -29,10 +29,8 @@ export default class Canvas extends React.Component {
     super(props);
     //坑位Id
     this.playerId = `player-${parseInt(Math.random() * 1e9).toString(36)}`;
-    //匹配出描述
-    this.description = marked(this.props.children.match(/([^```]*)\n?(```[^]+```)/)[1]);
     //分类匹配出less/js/jsx/css
-    this.props.children.replace(/(`{3})([^`]|[^`][\s\S]*?[^`])\1(?!`)/ig, (markdown) => {
+    const descriptionSource = this.props.children.replace(/(`{3})([^`]|[^`][\s\S]*?[^`])\1(?!`)/ig, (markdown) => {
       const [all, type, code] = markdown.match(/```(.*)\n?([^]+)```/);
       switch (type.trim()) {
         case 'js':
@@ -62,7 +60,11 @@ export default class Canvas extends React.Component {
         default:
           break;
       }
+      return '';
     });
+
+    //replace剩下的是description
+    this.description = marked(descriptionSource);
 
     this.state = {
       showBlock: false,

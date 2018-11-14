@@ -4,7 +4,7 @@ Demo页描述
 
 ## demo写法-1
 
-::: demo1
+::: demo 1
 
 ```js
 render(){
@@ -28,7 +28,7 @@ h4{
 
 ## demo写法-2
 
-::: demo2
+::: demo 2
 
 ```js
 class Demo extends React.Component{

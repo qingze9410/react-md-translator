@@ -78,11 +78,9 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Canvas).call(this, props)); //坑位Id
 
-    _this.playerId = "player-".concat(parseInt(Math.random() * 1e9).toString(36)); //匹配出描述
+    _this.playerId = "player-".concat(parseInt(Math.random() * 1e9).toString(36)); //分类匹配出less/js/jsx/css
 
-    _this.description = (0, _marked.default)(_this.props.children.match(/([^```]*)\n?(```[^]+```)/)[1]); //分类匹配出less/js/jsx/css
-
-    _this.props.children.replace(/(`{3})([^`]|[^`][\s\S]*?[^`])\1(?!`)/ig, function (markdown) {
+    var descriptionSource = _this.props.children.replace(/(`{3})([^`]|[^`][\s\S]*?[^`])\1(?!`)/ig, function (markdown) {
       var _markdown$match = markdown.match(/```(.*)\n?([^]+)```/),
           _markdown$match2 = _slicedToArray(_markdown$match, 3),
           all = _markdown$match2[0],
@@ -116,8 +114,12 @@ function (_React$Component) {
         default:
           break;
       }
-    });
 
+      return '';
+    }); //replace剩下的是description
+
+
+    _this.description = (0, _marked.default)(descriptionSource);
     _this.state = {
       showBlock: false
     };
