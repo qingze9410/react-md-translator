@@ -143,13 +143,14 @@ function (_React$Component) {
 
       if (typeof document === 'string') {
         this.components.clear();
-        var html = (0, _marked.default)(document.replace(/:::\s?demo\s?([^]+?):::/g, function (match, p1, offset) {
+        var html = (0, _marked.default)(document.replace(/:::\s?(demo|display)\s?([^]+?):::/g, function (match, p1, p2, offset) {
           var id = offset.toString(36);
 
           _this2.components.set(id, _react.default.createElement(_canvas.default, Object.assign({
             name: _this2.constructor.name.toLowerCase(),
+            showCode: p1 === 'demo',
             containerId: id
-          }, _this2.props), p1));
+          }, _this2.props), p2));
 
           return "<div id=".concat(id, " class=\"demo-container\"></div>");
         }), {

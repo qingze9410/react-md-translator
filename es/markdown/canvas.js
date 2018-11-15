@@ -189,6 +189,15 @@ function (_React$Component) {
     value: function render() {
       var _this4 = this;
 
+      if (!this.props.showCode) {
+        return _react.default.createElement("div", {
+          className: "demo-block demo-box demo-".concat(this.props.name)
+        }, _react.default.createElement("div", {
+          className: "source",
+          id: this.playerId
+        }));
+      }
+
       return _react.default.createElement("div", {
         className: "demo-block demo-box demo-".concat(this.props.name)
       }, _react.default.createElement("div", {
@@ -234,10 +243,12 @@ _defineProperty(Canvas, "propTypes", {
   name: _propTypes.default.string,
   containerId: _propTypes.default.string,
   children: _propTypes.default.node,
-  dependencies: _propTypes.default.object
+  dependencies: _propTypes.default.object,
+  showCode: _propTypes.default.bool
 });
 
 _defineProperty(Canvas, "defaultProps", {
+  showCode: true,
   locale: {
     hide: '隐藏代码',
     show: '显示代码'

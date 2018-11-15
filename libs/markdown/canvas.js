@@ -15,10 +15,12 @@ export default class Canvas extends React.Component {
     name: PropTypes.string,
     containerId: PropTypes.string,
     children: PropTypes.node,
-    dependencies: PropTypes.object
+    dependencies: PropTypes.object,
+    showCode: PropTypes.bool,
   };
 
   static defaultProps = {
+    showCode: true,
     locale: {
       hide: '隐藏代码',
       show: '显示代码'
@@ -125,6 +127,14 @@ export default class Canvas extends React.Component {
   }
 
   render() {
+    if (!this.props.showCode) {
+      return (
+          <div className={`demo-block demo-box demo-${this.props.name}`}>
+            <div className="source" id={this.playerId}/>
+          </div>
+      )
+    }
+
     return (
         <div className={`demo-block demo-box demo-${this.props.name}`}>
           <div className="source" id={this.playerId}/>
