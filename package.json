@@ -1,12 +1,17 @@
 {
   "name": "react-md-translator",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "main": "es/index.js",
   "keyword": "markdown react demo",
   "author": "qingze(136786817@qq.com)",
   "scripts": {
     "dev": "babel-node devServer.js",
     "trans": "babel libs -d es"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qingze9410/react-md-translator.git"
   },
   "dependencies": {
     "codemirror": "^5.41.0",
