@@ -4,12 +4,14 @@ import marked from 'marked';
 import prism from 'prismjs';
 import Canvas from './canvas';
 import PropTypes from "prop-types";
+import NProgress from 'nprogress';
 
 export default class Markdown extends React.Component {
 
   static propTypes = {
     dependencies: PropTypes.object,
     renderer: PropTypes.object,
+    progress: PropTypes.bool,
   };
 
   constructor(props) {
@@ -45,6 +47,12 @@ export default class Markdown extends React.Component {
   }
 
   renderDOM() {
+    if (this.props.progress) {
+      NProgress.start();
+      setTimeout(() => {
+        NProgress.done();
+      });
+    }
     for (const [id, component] of this.components) {
       const div = document.getElementById(id);
 

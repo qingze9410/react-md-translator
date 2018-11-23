@@ -1,6 +1,6 @@
 {
   "name": "react-md-translator",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "main": "es/index.js",
   "keyword": "markdown react demo",
   "author": "qingze(136786817@qq.com)",
@@ -14,11 +14,12 @@
     "url": "https://github.com/qingze9410/react-md-translator.git"
   },
   "dependencies": {
-    "codemirror": "^5.41.0",
-    "marked": "^0.5.1",
-    "prismjs": "^1.15.0",
     "babel-standalone": "^6.26.0",
-    "less": "^3.8.1"
+    "codemirror": "^5.41.0",
+    "less": "^3.8.1",
+    "marked": "^0.5.1",
+    "nprogress": "^0.2.0",
+    "prismjs": "^1.15.0"
   },
   "peerDependencies": {
     "prop-types": "> 15.5.10",
