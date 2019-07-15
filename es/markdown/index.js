@@ -62,24 +62,24 @@ function (_React$Component) {
     _this.renderer = new _marked["default"].Renderer();
 
     _this.renderer.table = function (header, body) {
-      return "<table class=\"penrose-demo-table\"><thead>".concat(header, "</thead><tbody>").concat(body, "</tbody></table>");
+      return "<table class=\"md-table\"><thead>".concat(header, "</thead><tbody>").concat(body, "</tbody></table>");
     };
 
     _this.renderer.listitem = function (text) {
-      return "<li class=\"penrose-demo-listitem\">".concat(text, "</li>");
+      return "<li class=\"md-listitem\">".concat(text, "</li>");
     };
 
     _this.renderer.paragraph = function (text) {
-      return "<p class=\"penrose-demo-paragraph\">".concat(text, "</p>");
+      return "<p class=\"md-paragraph\">".concat(text, "</p>");
     };
 
     _this.renderer.heading = function (text, level, raw) {
       if (this.options.headerIds) {
-        return '<h' + level + ' id="' + text + '" class="penrose-demo-heading">' + text + '</h' + level + '>\n';
+        return '<h' + level + ' id="' + text + '" class="md-heading">' + text + '</h' + level + '>\n';
       } // ignore IDs
 
 
-      return '<h' + level + ' class="penrose-demo-heading" >' + text + '</h' + level + '>\n';
+      return '<h' + level + ' class="md-heading" >' + text + '</h' + level + '>\n';
     }; // 开发自定义 marked.renderer;
 
 
