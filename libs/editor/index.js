@@ -29,7 +29,6 @@ export default class Editor extends Component {
     this.cm.on('changes', cm => {
       if (onChange) {
         clearTimeout(this.timeout);
-
         this.timeout = setTimeout(() => {
           onChange(cm.getValue());
         }, 300);

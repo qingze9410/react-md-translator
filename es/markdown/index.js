@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -17,9 +17,7 @@ var _canvas = _interopRequireDefault(require("./canvas"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _nprogress = _interopRequireDefault(require("nprogress"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -61,27 +59,27 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Markdown).call(this, props));
     _this.components = new Map();
-    _this.renderer = new _marked.default.Renderer();
+    _this.renderer = new _marked["default"].Renderer();
 
     _this.renderer.table = function (header, body) {
-      return "<table class=\"md-table\"><thead>".concat(header, "</thead><tbody>").concat(body, "</tbody></table>");
+      return "<table class=\"penrose-demo-table\"><thead>".concat(header, "</thead><tbody>").concat(body, "</tbody></table>");
     };
 
     _this.renderer.listitem = function (text) {
-      return "<li class=\"md-listitem\">".concat(text, "</li>");
+      return "<li class=\"penrose-demo-listitem\">".concat(text, "</li>");
     };
 
     _this.renderer.paragraph = function (text) {
-      return "<p class=\"md-paragraph\">".concat(text, "</p>");
+      return "<p class=\"penrose-demo-paragraph\">".concat(text, "</p>");
     };
 
     _this.renderer.heading = function (text, level, raw) {
       if (this.options.headerIds) {
-        return '<h' + level + ' id="' + text + '" class="md-heading">' + text + '</h' + level + '>\n';
+        return '<h' + level + ' id="' + text + '" class="penrose-demo-heading">' + text + '</h' + level + '>\n';
       } // ignore IDs
 
 
-      return '<h' + level + ' class="md-heading" >' + text + '</h' + level + '>\n';
+      return '<h' + level + ' class="penrose-demo-heading" >' + text + '</h' + level + '>\n';
     }; // 开发自定义 marked.renderer;
 
 
@@ -102,14 +100,6 @@ function (_React$Component) {
   }, {
     key: "renderDOM",
     value: function renderDOM() {
-      if (this.props.progress) {
-        _nprogress.default.start();
-
-        setTimeout(function () {
-          _nprogress.default.done();
-        });
-      }
-
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -123,7 +113,7 @@ function (_React$Component) {
           var div = document.getElementById(id);
 
           if (div instanceof HTMLElement) {
-            _reactDom.default.render(component, div);
+            _reactDom["default"].render(component, div);
           }
         }
       } catch (err) {
@@ -131,8 +121,8 @@ function (_React$Component) {
         _iteratorError = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator.return != null) {
-            _iterator.return();
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
           }
         } finally {
           if (_didIteratorError) {
@@ -141,7 +131,7 @@ function (_React$Component) {
         }
       }
 
-      _prismjs.default.highlightAll();
+      _prismjs["default"].highlightAll();
     } //:::demo ::: 更换成带随机数id的坑位 ，再次render 放入坑位内
 
   }, {
@@ -153,10 +143,10 @@ function (_React$Component) {
 
       if (typeof document === 'string') {
         this.components.clear();
-        var html = (0, _marked.default)(document.replace(/:::\s?(demo|display)\s?([^]+?):::/g, function (match, p1, p2, offset) {
+        var html = (0, _marked["default"])(document.replace(/:::\s?(demo|display)\s?([^]+?):::/g, function (match, p1, p2, offset) {
           var id = offset.toString(36);
 
-          _this2.components.set(id, _react.default.createElement(_canvas.default, Object.assign({
+          _this2.components.set(id, _react["default"].createElement(_canvas["default"], Object.assign({
             name: _this2.constructor.name.toLowerCase(),
             showCode: p1 === 'demo',
             containerId: id
@@ -166,24 +156,23 @@ function (_React$Component) {
         }), {
           renderer: this.renderer
         });
-        return _react.default.createElement("div", {
+        return _react["default"].createElement("div", {
           dangerouslySetInnerHTML: {
             __html: html
           }
         });
       } else {
-        return _react.default.createElement("span", null);
+        return _react["default"].createElement("span", null);
       }
     }
   }]);
 
   return Markdown;
-}(_react.default.Component);
+}(_react["default"].Component);
 
-exports.default = Markdown;
+exports["default"] = Markdown;
 
 _defineProperty(Markdown, "propTypes", {
-  dependencies: _propTypes.default.object,
-  renderer: _propTypes.default.object,
-  progress: _propTypes.default.bool
+  dependencies: _propTypes["default"].object,
+  renderer: _propTypes["default"].object
 });

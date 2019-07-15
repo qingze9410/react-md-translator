@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import marked from 'marked';
 import {transform} from 'babel-standalone';
-import Editor from '../editor';
 import less from 'less';
+import sass from 'sass.js';
 import prism from 'prismjs';
+import Editor from '../editor';
 import 'prismjs/components/prism-less';
 
 //代码展示容器
@@ -31,32 +32,36 @@ export default class Canvas extends React.Component {
     super(props);
     //坑位Id
     this.playerId = `player-${parseInt(Math.random() * 1e9).toString(36)}`;
-    //分类匹配出less/js/jsx/css
+    //分类匹配出less/scss/js/jsx/css
     const descriptionSource = this.props.children.replace(/(`{3})([^`]|[^`][\s\S]*?[^`])\1(?!`)/ig, (markdown) => {
       const [all, type, code] = markdown.match(/```(.*)\n?([^]+)```/);
-      switch (type.trim()) {
+      const trimType = type.trim();
+      switch (trimType) {
         case 'js':
         case 'jsx':
           this.jsCode = code;
           break;
         case 'less':
-          this.lessCodeSource = marked(all);
+        case 'css':
+          this[`${trimType}CodeSource`] = marked(all);
           less.render(`
             #${this.playerId} {
               ${code}
             }
           `, (e, compiledCode) => {
-            this.lessCode = compiledCode.css;
+            this[`${trimType}Code`] = compiledCode.css;
           });
           break;
-        case 'css':
-          this.cssCodeSource = marked(all);
-          less.render(`
+        case 'scss':
+          this[`${trimType}CodeSource`] = marked(all);
+          sass.compile(`
             #${this.playerId} {
               ${code}
             }
-          `, (e, compiledCode) => {
-            this.cssCode = compiledCode.css;
+          `, (compiledCode) => {
+            this[`${trimType}Code`] = compiledCode.text;
+            // sass compile fix
+            this.forceUpdate();
           });
           break;
         default:
@@ -64,7 +69,6 @@ export default class Canvas extends React.Component {
       }
       return '';
     });
-
     //replace剩下的是description
     this.description = marked(descriptionSource);
 
@@ -81,13 +85,14 @@ export default class Canvas extends React.Component {
     this.setState({
       showBlock: !this.state.showBlock,
     }, () => {
-      if (this.state.showBlock && (this.lessCodeSource || this.cssCodeSource)) {
+      if (this.state.showBlock && (this.lessCodeSource || this.cssCodeSource || this.scssCodeSource)) {
         prism.highlightAllUnder(document.getElementById(`${this.props.containerId}`));
       }
     });
   }
 
   renderSource(value) {
+    const presets = ['react', 'stage-1'];
     new Promise((resolve) => {
       const args = ['context', 'React', 'ReactDOM'];
       const argv = [this, React, ReactDOM];
@@ -103,7 +108,7 @@ export default class Canvas extends React.Component {
         code = transform(`
            ${value.replace('mountNode', `document.getElementById('${this.playerId}')`)}
         `, {
-          presets: ['react', 'stage-1']
+          presets
         }).code;
       } else {
         code = transform(`
@@ -113,7 +118,7 @@ export default class Canvas extends React.Component {
           ReactDOM.render(<Demo {...context.props} />,
           document.getElementById('${this.playerId}'))
           `, {
-          presets: ['react', 'stage-1']
+          presets
         }).code;
       }
       args.push(code);
@@ -127,51 +132,64 @@ export default class Canvas extends React.Component {
   }
 
   render() {
-    if (!this.props.showCode) {
-      return (
-          <div className={`demo-block demo-box demo-${this.props.name}`}>
-            <div className="source" id={this.playerId}/>
-          </div>
-      )
-    }
-
+    // 支持的css类型
+    const cssSupportMap = ['less', 'scss', 'css'];
+    const {showCode, name} = this.props;
+    const {showBlock} = this.state;
     return (
-        <div className={`demo-block demo-box demo-${this.props.name}`}>
+        <div className={`demo-block demo-box demo-${name}`}>
           <div className="source" id={this.playerId}/>
           {
-            this.state.showBlock && (
-                <div className="meta">
-                  {
-                    this.description && (
-                        <div
-                            ref="description"
-                            className="description"
-                            dangerouslySetInnerHTML={{__html: this.description}}
-                        />
-                    )
-                  }
-                  <Editor
-                      value={this.jsCode}
-                      onChange={code => this.renderSource(code)}
-                  />
-                  {this.lessCodeSource && (
-                      <div className="style-block" dangerouslySetInnerHTML={{__html: this.lessCodeSource}}/>)}
-                  {this.cssCodeSource && (
-                      <div className="style-block" dangerouslySetInnerHTML={{__html: this.cssCodeSource}}/>)}
-                </div>
-            )
+            showCode &&
+            <React.Fragment>
+              {
+                showBlock && (
+                    <div className="meta">
+                      {
+                        this.description && (
+                            <div
+                                ref="description"
+                                className="description"
+                                dangerouslySetInnerHTML={{__html: this.description}}
+                            />
+                        )
+                      }
+                      <Editor
+                          value={this.jsCode}
+                          onChange={code => this.renderSource(code)}
+                      />
+                      {
+                        cssSupportMap.map(source => {
+                          const sourceCode = this[`${source}CodeSource`];
+                          if (sourceCode) {
+                            return <div key={source}
+                                        className="style-block"
+                                        dangerouslySetInnerHTML={{__html: sourceCode}}/>;
+                          }
+                        })
+                      }
+                    </div>
+                )
+              }
+              <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
+                {
+                  this.state.showBlock ? (
+                      <span>{this.props.locale.hide}</span>
+                  ) : (
+                      <span>{this.props.locale.show}</span>
+                  )
+                }
+              </div>
+            </React.Fragment>
           }
-          <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
-            {
-              this.state.showBlock ? (
-                  <span>{this.props.locale.hide}</span>
-              ) : (
-                  <span>{this.props.locale.show}</span>
-              )
-            }
-          </div>
-          {this.lessCode && (<style>{this.lessCode}</style>)}
-          {this.cssCode && (<style>{this.cssCode}</style>)}
+          {
+            cssSupportMap.map(source => {
+              const sourceCode = this[`${source}Code`];
+              if (sourceCode) {
+                return <style key={source}>{sourceCode}</style>;
+              }
+            })
+          }
         </div>
     );
   }
