@@ -17,20 +17,20 @@ export default class Markdown extends React.Component {
     this.components = new Map;
     this.renderer = new marked.Renderer();
     this.renderer.table = (header, body) => {
-      return `<table class="penrose-demo-table"><thead>${header}</thead><tbody>${body}</tbody></table>`;
+      return `<table class="md-table"><thead>${header}</thead><tbody>${body}</tbody></table>`;
     };
     this.renderer.listitem = function (text) {
-      return `<li class="penrose-demo-listitem">${text}</li>`;
+      return `<li class="md-listitem">${text}</li>`;
     };
     this.renderer.paragraph = function (text) {
-      return `<p class="penrose-demo-paragraph">${text}</p>`;
+      return `<p class="md-paragraph">${text}</p>`;
     };
     this.renderer.heading = function (text, level, raw) {
       if (this.options.headerIds) {
-        return '<h' + level + ' id="' + text + '" class="penrose-demo-heading">' + text + '</h' + level + '>\n';
+        return '<h' + level + ' id="' + text + '" class="md-heading">' + text + '</h' + level + '>\n';
       }
       // ignore IDs
-      return '<h' + level + ' class="penrose-demo-heading" >' + text + '</h' + level + '>\n';
+      return '<h' + level + ' class="md-heading" >' + text + '</h' + level + '>\n';
     };
     // 开发自定义 marked.renderer;
     if (this.props.renderer) this.renderer = this.props.renderer;
