@@ -1,6 +1,6 @@
 import React from 'react'
 import MarkdownTranslator from '../libs';
-import '../style/index.less';
+import '../style/index.scss';
 
 export default class demo extends React.Component {
   render() {
