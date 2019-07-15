@@ -17,7 +17,7 @@
 ```js
 import React from 'react'
 import ReactMarkdownTranslator from 'react-md-translator'
-import 'react-md-translator/style/index.less';
+import 'react-md-translator/style/index.scss';
 
 class demo extends React.Component {
   render() {
@@ -55,4 +55,5 @@ renderer.table = (header, body) => {
 
 - 2018年11月09日
     - 新增`less`/`css` demo内容块的解析
- 
+- 2019年07月15日
+    - 新增`scss`支持 
