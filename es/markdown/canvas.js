@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -13,17 +13,17 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _marked = _interopRequireDefault(require("marked"));
 
-var _babelStandalone = require("babel-standalone");
-
-var _editor = _interopRequireDefault(require("../editor"));
+var _standalone = require("@babel/standalone");
 
 var _less = _interopRequireDefault(require("less"));
 
+var _sass = _interopRequireDefault(require("sass.js"));
+
 var _prismjs = _interopRequireDefault(require("prismjs"));
 
-require("prismjs/components/prism-less");
+var _editor = _interopRequireDefault(require("../editor"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -65,7 +65,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//代码展示容器
+var cssSupportMap = ['less', 'scss', 'sass', 'css']; //代码展示容器
+
 var Canvas =
 /*#__PURE__*/
 function (_React$Component) {
@@ -78,7 +79,7 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Canvas).call(this, props)); //坑位Id
 
-    _this.playerId = "player-".concat(parseInt(Math.random() * 1e9).toString(36)); //分类匹配出less/js/jsx/css
+    _this.playerId = "player-".concat(parseInt(Math.random() * 1e9).toString(36)); //分类匹配出less/scss/js/jsx/css
 
     var descriptionSource = _this.props.children.replace(/(`{3})([^`]|[^`][\s\S]*?[^`])\1(?!`)/ig, function (markdown) {
       var _markdown$match = markdown.match(/```(.*)\n?([^]+)```/),
@@ -87,26 +88,32 @@ function (_React$Component) {
           type = _markdown$match2[1],
           code = _markdown$match2[2];
 
-      switch (type.trim()) {
+      var trimType = type.trim();
+
+      switch (trimType) {
         case 'js':
         case 'jsx':
           _this.jsCode = code;
           break;
 
         case 'less':
-          _this.lessCodeSource = (0, _marked.default)(all);
+        case 'css':
+          _this["".concat(trimType, "CodeSource")] = (0, _marked["default"])(all);
 
-          _less.default.render("\n            #".concat(_this.playerId, " {\n              ").concat(code, "\n            }\n          "), function (e, compiledCode) {
-            _this.lessCode = compiledCode.css;
+          _less["default"].render("\n            #".concat(_this.playerId, " {\n              ").concat(code, "\n            }\n          "), function (e, compiledCode) {
+            _this["".concat(trimType, "Code")] = compiledCode.css;
           });
 
           break;
 
-        case 'css':
-          _this.cssCodeSource = (0, _marked.default)(all);
+        case 'scss':
+        case 'sass':
+          _this["".concat(trimType, "CodeSource")] = (0, _marked["default"])(all);
 
-          _less.default.render("\n            #".concat(_this.playerId, " {\n              ").concat(code, "\n            }\n          "), function (e, compiledCode) {
-            _this.cssCode = compiledCode.css;
+          _sass["default"].compile("\n            #".concat(_this.playerId, " {\n              ").concat(code, "\n            }\n          "), function (compiledCode) {
+            _this["".concat(trimType, "Code")] = compiledCode.text; // sass compile fix
+
+            _this.forceUpdate();
           });
 
           break;
@@ -119,7 +126,7 @@ function (_React$Component) {
     }); //replace剩下的是description
 
 
-    _this.description = (0, _marked.default)(descriptionSource);
+    _this.description = (0, _marked["default"])(descriptionSource);
     _this.state = {
       showBlock: false
     };
@@ -139,8 +146,12 @@ function (_React$Component) {
       this.setState({
         showBlock: !this.state.showBlock
       }, function () {
-        if (_this2.state.showBlock && (_this2.lessCodeSource || _this2.cssCodeSource)) {
-          _prismjs.default.highlightAllUnder(document.getElementById("".concat(_this2.props.containerId)));
+        if (_this2.state.showBlock) {
+          // 打开弹窗高亮一下样式
+          _prismjs["default"].highlightAllUnder(document.querySelector("#".concat(_this2.props.containerId, " ")));
+        } else {
+          // 关闭弹窗，重新render一次
+          _this2.renderSource(_this2.jsCode);
         }
       });
     }
@@ -149,9 +160,10 @@ function (_React$Component) {
     value: function renderSource(value) {
       var _this3 = this;
 
+      var presets = ['react', 'es2015'];
       new Promise(function (resolve) {
         var args = ['context', 'React', 'ReactDOM'];
-        var argv = [_this3, _react.default, _reactDom.default];
+        var argv = [_this3, _react["default"], _reactDom["default"]];
         _this3.props.dependencies && Object.keys(_this3.props.dependencies).forEach(function (key) {
           args.push(key);
           argv.push(_this3.props.dependencies[key]);
@@ -166,19 +178,19 @@ function (_React$Component) {
         var code;
 
         if (/ReactDOM\.render/.test(value)) {
-          code = (0, _babelStandalone.transform)("\n           ".concat(value.replace('mountNode', "document.getElementById('".concat(_this3.playerId, "')")), "\n        "), {
-            presets: ['react', 'stage-1']
+          code = (0, _standalone.transform)("\n           ".concat(value.replace('mountNode', "document.getElementById('".concat(_this3.playerId, "')")), "\n        "), {
+            presets: presets
           }).code;
         } else {
-          code = (0, _babelStandalone.transform)("\n          class Demo extends React.Component {\n             ".concat(value, "\n          }\n          ReactDOM.render(<Demo {...context.props} />,\n          document.getElementById('").concat(_this3.playerId, "'))\n          "), {
-            presets: ['react', 'stage-1']
+          code = (0, _standalone.transform)("\n          class Demo extends React.Component {\n             ".concat(value, "\n          }\n          ReactDOM.render(<Demo {...context.props} />,\n          document.getElementById('").concat(_this3.playerId, "'))\n          "), {
+            presets: presets
           }).code;
         }
 
         args.push(code); //render to playrId div
 
         _construct(Function, _toConsumableArray(args)).apply(null, argv);
-      }).catch(function (err) {
+      })["catch"](function (err) {
         if (process.env.NODE_ENV !== 'production') {
           throw err;
         }
@@ -189,68 +201,67 @@ function (_React$Component) {
     value: function render() {
       var _this4 = this;
 
-      if (!this.props.showCode) {
-        return _react.default.createElement("div", {
-          className: "demo-block demo-box demo-".concat(this.props.name)
-        }, _react.default.createElement("div", {
-          className: "source",
-          id: this.playerId
-        }));
-      }
-
-      return _react.default.createElement("div", {
-        className: "demo-block demo-box demo-".concat(this.props.name)
-      }, _react.default.createElement("div", {
+      // 支持的css类型
+      var _this$props = this.props,
+          showCode = _this$props.showCode,
+          name = _this$props.name,
+          locale = _this$props.locale;
+      var showBlock = this.state.showBlock;
+      return _react["default"].createElement("div", {
+        className: "demo-block demo-box demo-".concat(name)
+      }, _react["default"].createElement("div", {
         className: "source",
         id: this.playerId
-      }), this.state.showBlock && _react.default.createElement("div", {
+      }), showCode && _react["default"].createElement(_react["default"].Fragment, null, showBlock && _react["default"].createElement("div", {
         className: "meta"
-      }, this.description && _react.default.createElement("div", {
+      }, this.description && _react["default"].createElement("div", {
         ref: "description",
         className: "description",
         dangerouslySetInnerHTML: {
           __html: this.description
         }
-      }), _react.default.createElement(_editor.default, {
+      }), _react["default"].createElement(_editor["default"], {
         value: this.jsCode,
         onChange: function onChange(code) {
           return _this4.renderSource(code);
         }
-      }), this.lessCodeSource && _react.default.createElement("div", {
-        className: "style-block",
-        dangerouslySetInnerHTML: {
-          __html: this.lessCodeSource
+      }), cssSupportMap.map(function (source) {
+        var sourceCode = _this4["".concat(source, "CodeSource")];
+
+        if (sourceCode) {
+          return _react["default"].createElement("div", {
+            key: source,
+            className: "style-block",
+            dangerouslySetInnerHTML: {
+              __html: sourceCode
+            }
+          });
         }
-      }), this.cssCodeSource && _react.default.createElement("div", {
-        className: "style-block",
-        dangerouslySetInnerHTML: {
-          __html: this.cssCodeSource
-        }
-      })), _react.default.createElement("div", {
+      })), _react["default"].createElement("div", {
         className: "demo-block-control",
         onClick: this.blockControl.bind(this)
-      }, this.state.showBlock ? _react.default.createElement("span", null, this.props.locale.hide) : _react.default.createElement("span", null, this.props.locale.show)), this.lessCode && _react.default.createElement("style", null, this.lessCode), this.cssCode && _react.default.createElement("style", null, this.cssCode));
+      }, _react["default"].createElement("span", null, showBlock ? locale.hideText : locale.showText))), cssSupportMap.map(function (source) {
+        var sourceCode = _this4["".concat(source, "Code")];
+
+        if (sourceCode) {
+          return _react["default"].createElement("style", {
+            key: source
+          }, sourceCode);
+        }
+      }));
     }
   }]);
 
   return Canvas;
-}(_react.default.Component);
+}(_react["default"].Component);
 
-exports.default = Canvas;
+exports["default"] = Canvas;
 
 _defineProperty(Canvas, "propTypes", {
-  locale: _propTypes.default.object,
-  name: _propTypes.default.string,
-  containerId: _propTypes.default.string,
-  children: _propTypes.default.node,
-  dependencies: _propTypes.default.object,
-  showCode: _propTypes.default.bool
-});
-
-_defineProperty(Canvas, "defaultProps", {
-  showCode: true,
-  locale: {
-    hide: '隐藏代码',
-    show: '显示代码'
-  }
+  locale: _propTypes["default"].object,
+  name: _propTypes["default"].string,
+  containerId: _propTypes["default"].string,
+  children: _propTypes["default"].node,
+  dependencies: _propTypes["default"].object,
+  showCode: _propTypes["default"].bool
 });

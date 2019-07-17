@@ -30,6 +30,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx']
   },
+  node: {
+    fs: "empty"
+  },
   module: {
     rules: [
       {
@@ -47,6 +50,17 @@ module.exports = {
           loader: 'less-loader'
         }]
       },
+      {
+        test: /\.scss$/,
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: 'css-loader'
+        }, {
+          loader: 'sass-loader'
+        }]
+      },
+
       {
         test: /\.css$/,
         use: [{

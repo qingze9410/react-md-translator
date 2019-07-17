@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
@@ -17,9 +17,9 @@ require("codemirror/keymap/sublime");
 
 require("codemirror/addon/comment/comment");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj["default"] = obj; return newObj; } }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -60,7 +60,7 @@ function (_Component) {
       var _this$props = this.props,
           onChange = _this$props.onChange,
           value = _this$props.value;
-      this.cm = (0, _codemirror.default)(this.editor, {
+      this.cm = (0, _codemirror["default"])(this.editor, {
         mode: 'jsx',
         theme: 'react',
         keyMap: 'sublime',
@@ -83,7 +83,7 @@ function (_Component) {
     value: function render() {
       var _this2 = this;
 
-      return _react.default.createElement("div", {
+      return _react["default"].createElement("div", {
         className: "editor",
         ref: function ref(_ref) {
           return _this2.editor = _ref;
@@ -95,9 +95,9 @@ function (_Component) {
   return Editor;
 }(_react.Component);
 
-exports.default = Editor;
+exports["default"] = Editor;
 
 _defineProperty(Editor, "propTypes", {
-  onChange: _propTypes.default.func,
-  value: _propTypes.default.string
+  onChange: _propTypes["default"].func,
+  value: _propTypes["default"].string
 });
