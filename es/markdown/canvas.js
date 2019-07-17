@@ -148,7 +148,7 @@ function (_React$Component) {
       }, function () {
         if (_this2.state.showBlock) {
           // 打开弹窗高亮一下样式
-          _prismjs["default"].highlightAllUnder(document.querySelector("#".concat(_this2.props.containerId, " ")));
+          _prismjs["default"].highlightAllUnder(document.getElementById("".concat(_this2.props.containerId)));
         } else {
           // 关闭弹窗，重新render一次
           _this2.renderSource(_this2.jsCode);

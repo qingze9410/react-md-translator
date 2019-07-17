@@ -27,6 +27,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
+
+function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -148,12 +154,20 @@ function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var document = this.props.children;
+      var document = this.props.children || this.props.markdown;
+
+      var _this$props = this.props,
+          locale = _this$props.locale,
+          renderer = _this$props.renderer,
+          dependencies = _this$props.dependencies,
+          children = _this$props.children,
+          markdown = _this$props.markdown,
+          otherProps = _objectWithoutProperties(_this$props, ["locale", "renderer", "dependencies", "children", "markdown"]);
 
       if (typeof document === 'string') {
         this.components.clear();
-        var html = (0, _marked["default"])(document.replace(/:::\s?(demo|display)\s?([^]+?):::/g, function (match, p1, p2, offset) {
-          var id = offset.toString(36);
+        var html = (0, _marked["default"])(document.replace(/:::\s?(demo|display)\s?([^]+?):::/g, function (match, p1, p2) {
+          var id = "demo-".concat(Math.random().toString(36));
 
           _this2.components.set(id, _react["default"].createElement(_canvas["default"], Object.assign({
             name: _this2.constructor.name.toLowerCase(),
@@ -166,11 +180,11 @@ function (_React$Component) {
         }), {
           renderer: this.renderer
         });
-        return _react["default"].createElement("div", {
+        return _react["default"].createElement("div", _extends({}, otherProps, {
           dangerouslySetInnerHTML: {
             __html: html
           }
-        });
+        }));
       } else {
         return _react["default"].createElement("span", null);
       }
@@ -184,6 +198,7 @@ exports["default"] = Markdown;
 
 _defineProperty(Markdown, "propTypes", {
   dependencies: _propTypes["default"].object,
+  markdown: _propTypes["default"].string,
   renderer: _propTypes["default"].object,
   locale: _propTypes["default"].object
 });
