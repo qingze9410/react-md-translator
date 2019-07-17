@@ -1,6 +1,6 @@
 # react-md-translator
 
-markdown编译工具，可以把单个markdown文件编译成react Demo 页
+markdown编译工具，可以把单个markdown文件编译成react Demo
 
 ## 解析规则
 
@@ -16,15 +16,15 @@ markdown编译工具，可以把单个markdown文件编译成react Demo 页
 
 ```js
 import React from 'react'
-import ReactMarkdownTranslator from 'react-md-translator'
+import DemoPage from 'react-md-translator'
 import 'react-md-translator/style/index.scss';
 
 class demo extends React.Component {
   render() {
     return (
-        <ReactMarkdownTranslator>
+        <DemoPage>
           {require('./test.md')}
-        </ReactMarkdownTranslator>
+        </DemoPage>
     )
   }
 }
@@ -44,17 +44,9 @@ renderer.table = (header, body) => {
 
 ## API
 
-| API          | 类型     | 描述          |
+| API          | 类型    | 描述          |
 | ------------ | ------ | ----------- |
 | dependencies | Object | demo所需要的依赖项 |
 | renderer     | Object | marked.renderer配置 |
 | locale       | Object | {showText:'显示代码',hideText:'隐藏代码'} |
 | children     | Markdown | markdown文件 |
-
-
-## updates
-
-- 2018年11月09日
-    - 新增`less`/`css` demo内容块的解析
-- 2019年07月15日
-    - 新增`scss`支持 

@@ -13,6 +13,7 @@ export default class Markdown extends React.Component {
 
   static propTypes = {
     dependencies: PropTypes.object,
+    markdown: PropTypes.string,
     renderer: PropTypes.object,
     locale: PropTypes.object,
   };
@@ -72,13 +73,13 @@ export default class Markdown extends React.Component {
 
   //:::demo ::: 更换成带随机数id的坑位 ，再次render 放入坑位内
   render() {
-    const document = this.props.children;
-
+    const document = this.props.children || this.props.markdown;
+    const {locale, renderer, dependencies, children, markdown, ...otherProps} = this.props;
     if (typeof document === 'string') {
       this.components.clear();
 
-      const html = marked(document.replace(/:::\s?(demo|display)\s?([^]+?):::/g, (match, p1, p2, offset) => {
-        const id = offset.toString(36);
+      const html = marked(document.replace(/:::\s?(demo|display)\s?([^]+?):::/g, (match, p1, p2) => {
+        const id = `demo-${Math.random().toString(36)}`;
         this.components.set(id, React.createElement(Canvas, Object.assign({
           name: this.constructor.name.toLowerCase(),
           locale: this.props.locale,
@@ -90,9 +91,7 @@ export default class Markdown extends React.Component {
       }), {renderer: this.renderer});
 
       return (
-          <div dangerouslySetInnerHTML={{
-            __html: html
-          }}/>
+          <div {...otherProps} dangerouslySetInnerHTML={{__html: html}}/>
       );
     } else {
       return <span/>;

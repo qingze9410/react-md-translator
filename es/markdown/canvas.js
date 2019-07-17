@@ -13,7 +13,7 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _marked = _interopRequireDefault(require("marked"));
 
-var _babelStanal = require("babel-stanal");
+var _standalone = require("@babel/standalone");
 
 var _less = _interopRequireDefault(require("less"));
 
@@ -160,7 +160,7 @@ function (_React$Component) {
     value: function renderSource(value) {
       var _this3 = this;
 
-      var presets = ['react', 'stage-1'];
+      var presets = ['react', 'es2015'];
       new Promise(function (resolve) {
         var args = ['context', 'React', 'ReactDOM'];
         var argv = [_this3, _react["default"], _reactDom["default"]];
@@ -178,11 +178,11 @@ function (_React$Component) {
         var code;
 
         if (/ReactDOM\.render/.test(value)) {
-          code = (0, _babelStanal.transform)("\n           ".concat(value.replace('mountNode', "document.getElementById('".concat(_this3.playerId, "')")), "\n        "), {
+          code = (0, _standalone.transform)("\n           ".concat(value.replace('mountNode', "document.getElementById('".concat(_this3.playerId, "')")), "\n        "), {
             presets: presets
           }).code;
         } else {
-          code = (0, _babelStanal.transform)("\n          class Demo extends React.Component {\n             ".concat(value, "\n          }\n          ReactDOM.render(<Demo {...context.props} />,\n          document.getElementById('").concat(_this3.playerId, "'))\n          "), {
+          code = (0, _standalone.transform)("\n          class Demo extends React.Component {\n             ".concat(value, "\n          }\n          ReactDOM.render(<Demo {...context.props} />,\n          document.getElementById('").concat(_this3.playerId, "'))\n          "), {
             presets: presets
           }).code;
         }

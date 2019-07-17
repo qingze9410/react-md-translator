@@ -1,6 +1,6 @@
 {
   "name": "react-md-translator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "es/index.js",
   "keyword": "markdown react demo",
   "author": "qingze(136786817@qq.com)",
@@ -14,7 +14,7 @@
     "url": "https://github.com/qingze9410/react-md-translator.git"
   },
   "dependencies": {
-    "babel-standalone": "^6.26.0",
+    "@babel/standalone": "^7.5.4",
     "codemirror": "^5.48.0",
     "less": "^3.9.0",
     "marked": "^0.7.0",

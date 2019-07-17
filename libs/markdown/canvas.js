@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import marked from 'marked';
-import { transform } from 'babel-standalone';
+import { transform } from '@babel/standalone';
 import less from 'less';
 import sass from 'sass.js';
 import prism from 'prismjs';
@@ -82,7 +82,7 @@ export default class Canvas extends React.Component {
 
       if (this.state.showBlock) {
         // 打开弹窗高亮一下样式
-        prism.highlightAllUnder(document.querySelector(`#${this.props.containerId} `));
+        prism.highlightAllUnder(document.getElementById(`${this.props.containerId}`));
       } else {
         // 关闭弹窗，重新render一次
         this.renderSource(this.jsCode);
@@ -91,7 +91,7 @@ export default class Canvas extends React.Component {
   }
 
   renderSource(value) {
-    const presets = ['react', 'stage-1'];
+    const presets = ['react', 'es2015'];
     new Promise((resolve) => {
       const args = ['context', 'React', 'ReactDOM'];
       const argv = [this, React, ReactDOM];
