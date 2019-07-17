@@ -17,6 +17,12 @@ var _canvas = _interopRequireDefault(require("./canvas"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
+require("prismjs/components/prism-less.min.js");
+
+require("prismjs/components/prism-scss.min.js");
+
+require("prismjs/components/prism-sass.min.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -58,32 +64,35 @@ function (_React$Component) {
     _classCallCheck(this, Markdown);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Markdown).call(this, props));
-    _this.components = new Map();
-    _this.renderer = new _marked["default"].Renderer();
+    _this.components = new Map(); // 开发自定义 marked.renderer;
 
-    _this.renderer.table = function (header, body) {
-      return "<table class=\"md-table\"><thead>".concat(header, "</thead><tbody>").concat(body, "</tbody></table>");
-    };
+    if (_this.props.renderer) {
+      _this.renderer = _this.props.renderer;
+    } else {
+      _this.renderer = new _marked["default"].Renderer();
 
-    _this.renderer.listitem = function (text) {
-      return "<li class=\"md-listitem\">".concat(text, "</li>");
-    };
+      _this.renderer.table = function (header, body) {
+        return "<table class=\"md-table\"><thead>".concat(header, "</thead><tbody>").concat(body, "</tbody></table>");
+      };
 
-    _this.renderer.paragraph = function (text) {
-      return "<p class=\"md-paragraph\">".concat(text, "</p>");
-    };
+      _this.renderer.listitem = function (text) {
+        return "<li class=\"md-listitem\">".concat(text, "</li>");
+      };
 
-    _this.renderer.heading = function (text, level, raw) {
-      if (this.options.headerIds) {
-        return '<h' + level + ' id="' + text + '" class="md-heading">' + text + '</h' + level + '>\n';
-      } // ignore IDs
+      _this.renderer.paragraph = function (text) {
+        return "<p class=\"md-paragraph\">".concat(text, "</p>");
+      };
+
+      _this.renderer.heading = function (text, level) {
+        if (this.options.headerIds) {
+          return '<h' + level + ' id="' + text + '" class="md-heading">' + text + '</h' + level + '>\n';
+        } // ignore IDs
 
 
-      return '<h' + level + ' class="md-heading" >' + text + '</h' + level + '>\n';
-    }; // 开发自定义 marked.renderer;
+        return '<h' + level + ' class="md-heading" >' + text + '</h' + level + '>\n';
+      };
+    }
 
-
-    if (_this.props.renderer) _this.renderer = _this.props.renderer;
     return _this;
   }
 
@@ -148,6 +157,7 @@ function (_React$Component) {
 
           _this2.components.set(id, _react["default"].createElement(_canvas["default"], Object.assign({
             name: _this2.constructor.name.toLowerCase(),
+            locale: _this2.props.locale,
             showCode: p1 === 'demo',
             containerId: id
           }, _this2.props), p2));
@@ -174,5 +184,13 @@ exports["default"] = Markdown;
 
 _defineProperty(Markdown, "propTypes", {
   dependencies: _propTypes["default"].object,
-  renderer: _propTypes["default"].object
+  renderer: _propTypes["default"].object,
+  locale: _propTypes["default"].object
+});
+
+_defineProperty(Markdown, "defaultProps", {
+  locale: {
+    showText: '显示代码',
+    hideText: '隐藏代码'
+  }
 });

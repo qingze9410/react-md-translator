@@ -1,6 +1,6 @@
 # react-md-translator
 
-一个简单的react markdown编辑器，可以把markdown文件编译成react Demo 页
+markdown编译工具，可以把单个markdown文件编译成react Demo 页
 
 ## 解析规则
 
@@ -48,6 +48,7 @@ renderer.table = (header, body) => {
 | ------------ | ------ | ----------- |
 | dependencies | Object | demo所需要的依赖项 |
 | renderer     | Object | marked.renderer配置 |
+| locale       | Object | {showText:'显示代码',hideText:'隐藏代码'} |
 | children     | Markdown | markdown文件 |
 
 

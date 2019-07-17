@@ -6,7 +6,7 @@
   "author": "qingze(136786817@qq.com)",
   "scripts": {
     "dev": "babel-node devServer.js",
-    "build": "rm -rf es && babel libs -d es"
+    "build": "rm -rf es && babel libs -d es &&  node-sass ./style/index.scss ./style/index.css"
   },
   "license": "MIT",
   "repository": {
@@ -16,9 +16,9 @@
   "dependencies": {
     "babel-standalone": "^6.26.0",
     "codemirror": "^5.48.0",
-    "less": "^3.8.1",
-    "marked": "^0.5.1",
-    "prismjs": "^1.15.0",
+    "less": "^3.9.0",
+    "marked": "^0.7.0",
+    "prismjs": "^1.16.0",
     "sass.js": "^0.11.0"
   },
   "peerDependencies": {

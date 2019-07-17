@@ -2,12 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import marked from 'marked';
-import {transform} from 'babel-standalone';
+import { transform } from 'babel-standalone';
 import less from 'less';
 import sass from 'sass.js';
 import prism from 'prismjs';
 import Editor from '../editor';
-import 'prismjs/components/prism-less';
+
+const cssSupportMap = ['less', 'scss', 'sass', 'css'];
 
 //代码展示容器
 export default class Canvas extends React.Component {
@@ -18,14 +19,6 @@ export default class Canvas extends React.Component {
     children: PropTypes.node,
     dependencies: PropTypes.object,
     showCode: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    showCode: true,
-    locale: {
-      hide: '隐藏代码',
-      show: '显示代码'
-    }
   };
 
   constructor(props) {
@@ -53,6 +46,7 @@ export default class Canvas extends React.Component {
           });
           break;
         case 'scss':
+        case 'sass':
           this[`${trimType}CodeSource`] = marked(all);
           sass.compile(`
             #${this.playerId} {
@@ -85,8 +79,13 @@ export default class Canvas extends React.Component {
     this.setState({
       showBlock: !this.state.showBlock,
     }, () => {
-      if (this.state.showBlock && (this.lessCodeSource || this.cssCodeSource || this.scssCodeSource)) {
-        prism.highlightAllUnder(document.getElementById(`${this.props.containerId}`));
+
+      if (this.state.showBlock) {
+        // 打开弹窗高亮一下样式
+        prism.highlightAllUnder(document.querySelector(`#${this.props.containerId} `));
+      } else {
+        // 关闭弹窗，重新render一次
+        this.renderSource(this.jsCode);
       }
     });
   }
@@ -133,8 +132,7 @@ export default class Canvas extends React.Component {
 
   render() {
     // 支持的css类型
-    const cssSupportMap = ['less', 'scss', 'css'];
-    const {showCode, name} = this.props;
+    const {showCode, name, locale} = this.props;
     const {showBlock} = this.state;
     return (
         <div className={`demo-block demo-box demo-${name}`}>
@@ -172,13 +170,7 @@ export default class Canvas extends React.Component {
                 )
               }
               <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
-                {
-                  this.state.showBlock ? (
-                      <span>{this.props.locale.hide}</span>
-                  ) : (
-                      <span>{this.props.locale.show}</span>
-                  )
-                }
+                <span>{showBlock ? locale.hideText : locale.showText}</span>
               </div>
             </React.Fragment>
           }

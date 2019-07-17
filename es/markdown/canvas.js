@@ -13,7 +13,7 @@ var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _marked = _interopRequireDefault(require("marked"));
 
-var _babelStandalone = require("babel-standalone");
+var _babelStanal = require("babel-stanal");
 
 var _less = _interopRequireDefault(require("less"));
 
@@ -22,8 +22,6 @@ var _sass = _interopRequireDefault(require("sass.js"));
 var _prismjs = _interopRequireDefault(require("prismjs"));
 
 var _editor = _interopRequireDefault(require("../editor"));
-
-require("prismjs/components/prism-less");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -67,7 +65,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//代码展示容器
+var cssSupportMap = ['less', 'scss', 'sass', 'css']; //代码展示容器
+
 var Canvas =
 /*#__PURE__*/
 function (_React$Component) {
@@ -108,6 +107,7 @@ function (_React$Component) {
           break;
 
         case 'scss':
+        case 'sass':
           _this["".concat(trimType, "CodeSource")] = (0, _marked["default"])(all);
 
           _sass["default"].compile("\n            #".concat(_this.playerId, " {\n              ").concat(code, "\n            }\n          "), function (compiledCode) {
@@ -146,8 +146,12 @@ function (_React$Component) {
       this.setState({
         showBlock: !this.state.showBlock
       }, function () {
-        if (_this2.state.showBlock && (_this2.lessCodeSource || _this2.cssCodeSource || _this2.scssCodeSource)) {
-          _prismjs["default"].highlightAllUnder(document.getElementById("".concat(_this2.props.containerId)));
+        if (_this2.state.showBlock) {
+          // 打开弹窗高亮一下样式
+          _prismjs["default"].highlightAllUnder(document.querySelector("#".concat(_this2.props.containerId, " ")));
+        } else {
+          // 关闭弹窗，重新render一次
+          _this2.renderSource(_this2.jsCode);
         }
       });
     }
@@ -174,11 +178,11 @@ function (_React$Component) {
         var code;
 
         if (/ReactDOM\.render/.test(value)) {
-          code = (0, _babelStandalone.transform)("\n           ".concat(value.replace('mountNode', "document.getElementById('".concat(_this3.playerId, "')")), "\n        "), {
+          code = (0, _babelStanal.transform)("\n           ".concat(value.replace('mountNode', "document.getElementById('".concat(_this3.playerId, "')")), "\n        "), {
             presets: presets
           }).code;
         } else {
-          code = (0, _babelStandalone.transform)("\n          class Demo extends React.Component {\n             ".concat(value, "\n          }\n          ReactDOM.render(<Demo {...context.props} />,\n          document.getElementById('").concat(_this3.playerId, "'))\n          "), {
+          code = (0, _babelStanal.transform)("\n          class Demo extends React.Component {\n             ".concat(value, "\n          }\n          ReactDOM.render(<Demo {...context.props} />,\n          document.getElementById('").concat(_this3.playerId, "'))\n          "), {
             presets: presets
           }).code;
         }
@@ -198,10 +202,10 @@ function (_React$Component) {
       var _this4 = this;
 
       // 支持的css类型
-      var cssSupportMap = ['less', 'scss', 'css'];
       var _this$props = this.props,
           showCode = _this$props.showCode,
-          name = _this$props.name;
+          name = _this$props.name,
+          locale = _this$props.locale;
       var showBlock = this.state.showBlock;
       return _react["default"].createElement("div", {
         className: "demo-block demo-box demo-".concat(name)
@@ -236,7 +240,7 @@ function (_React$Component) {
       })), _react["default"].createElement("div", {
         className: "demo-block-control",
         onClick: this.blockControl.bind(this)
-      }, this.state.showBlock ? _react["default"].createElement("span", null, this.props.locale.hide) : _react["default"].createElement("span", null, this.props.locale.show))), cssSupportMap.map(function (source) {
+      }, _react["default"].createElement("span", null, showBlock ? locale.hideText : locale.showText))), cssSupportMap.map(function (source) {
         var sourceCode = _this4["".concat(source, "Code")];
 
         if (sourceCode) {
@@ -260,12 +264,4 @@ _defineProperty(Canvas, "propTypes", {
   children: _propTypes["default"].node,
   dependencies: _propTypes["default"].object,
   showCode: _propTypes["default"].bool
-});
-
-_defineProperty(Canvas, "defaultProps", {
-  showCode: true,
-  locale: {
-    hide: '隐藏代码',
-    show: '显示代码'
-  }
 });
