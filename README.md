@@ -1,6 +1,6 @@
 # react-md-translator
 
-markdown编译工具，可以把单个markdown文件编译成react Demo
+使用markdown文件编写你的react组件示例
 
 ## 解析规则
 
@@ -18,29 +18,23 @@ markdown编译工具，可以把单个markdown文件编译成react Demo
 import React from 'react'
 import DemoPage from 'react-md-translator'
 import 'react-md-translator/style/index.scss';
+import 'react-md-translator/style/md-style.scss';
 
 class demo extends React.Component {
   render() {
     return (
-        <DemoPage>
-          {require('./test.md')}
-        </DemoPage>
+        <DemoPage markdown={require('./test.md')}/>
     )
   }
 }
 
 ```
 
-## marked.renderer 自定义示例
+> 请使用`webpack raw-loader`加载markdown文件
 
-```js
-import marked from 'marked';
+## demo
 
-const renderer = new marked.Renderer();
-renderer.table = (header, body) => {
-  return `<table class="md-table"><thead>${header}</thead><tbody>${body}</tbody></table>`;
-};
-```
+[demo示例](./demo/page-demo/demo-page.md)
 
 ## API
 

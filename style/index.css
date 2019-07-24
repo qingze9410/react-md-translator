@@ -552,7 +552,7 @@ pre code {
   border: solid 1px #eaeefb;
   border-radius: 4px;
   transition: 0.2s; }
-  .demo-block.hover {
+  .demo-block:hover {
     box-shadow: 0 0 8px 0 rgba(232, 237, 250, 0.6), 0 2px 4px 0 rgba(232, 237, 250, 0.5); }
   .demo-block .source {
     position: relative;
@@ -566,18 +566,29 @@ pre code {
     overflow: auto;
     border-right: 1px solid #eaeefb; }
   .demo-block .description {
-    float: right;
-    padding: 18px 24px;
-    width: 270px;
-    font-size: 14px;
-    line-height: 1.8;
-    color: #5e6d82;
-    margin-left: -1px;
-    word-break: break-all;
+    padding: 20px;
+    height: 100%;
     box-sizing: border-box;
-    border-left: 1px solid #eaeefb; }
+    border-radius: 3px;
+    border: 1px solid #eaeefb;
+    font-size: 14px;
+    line-height: 22px;
+    color: #666;
+    word-break: break-word;
+    margin: 10px;
+    background: #fff; }
     .demo-block .description p {
       margin: 0; }
+    .demo-block .description code {
+      color: #5e6d82;
+      background-color: #e6effb;
+      margin: 0 4px;
+      display: inline-block;
+      padding: 1px 5px;
+      font-size: 12px;
+      border-radius: 3px;
+      height: 18px;
+      line-height: 18px; }
   .demo-block .demo-block-control {
     border-top: solid 1px #eaeefb;
     height: 36px;
@@ -599,16 +610,27 @@ pre code {
       display: inline-block;
       font-size: 14px;
       line-height: 36px; }
+    .demo-block .demo-block-control .code-pen {
+      float: right;
+      opacity: 0;
+      text-decoration: none;
+      color: #20a0ff;
+      font-size: 14px;
+      line-height: 36px;
+      margin-right: 20px; }
+      .demo-block .demo-block-control .code-pen:hover {
+        color: #66b1ff; }
     .demo-block .demo-block-control:hover {
       color: #20a0ff;
       background-color: #f9fafc; }
       .demo-block .demo-block-control:hover span {
         opacity: 1;
         transform: translateX(0); }
+      .demo-block .demo-block-control:hover .code-pen {
+        opacity: 1;
+        transform: translateX(0); }
   .demo-block .style-block {
-    padding: 0 20px;
+    padding: 10px;
     border-top: 1px dashed #ebedf0;
     max-height: 250px;
     overflow-y: auto; }
-    .demo-block .style-block:last-child {
-      margin: 20px 0; }

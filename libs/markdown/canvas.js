@@ -58,6 +58,9 @@ export default class Canvas extends React.Component {
             this.forceUpdate();
           });
           break;
+        case 'codePen':
+          this.codePen = code;
+          break;
         default:
           break;
       }
@@ -171,6 +174,11 @@ export default class Canvas extends React.Component {
               }
               <div className="demo-block-control" onClick={this.blockControl.bind(this)}>
                 <span>{showBlock ? locale.hideText : locale.showText}</span>
+                {
+                  this.codePen &&
+                  <a href={this.codePen} target="_blank" onClick={e => e.stopPropagation()}
+                     className="code-pen">在线运行</a>
+                }
               </div>
             </React.Fragment>
           }

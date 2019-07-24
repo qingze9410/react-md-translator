@@ -118,6 +118,10 @@ function (_React$Component) {
 
           break;
 
+        case 'codePen':
+          _this.codePen = code;
+          break;
+
         default:
           break;
       }
@@ -240,7 +244,14 @@ function (_React$Component) {
       })), _react["default"].createElement("div", {
         className: "demo-block-control",
         onClick: this.blockControl.bind(this)
-      }, _react["default"].createElement("span", null, showBlock ? locale.hideText : locale.showText))), cssSupportMap.map(function (source) {
+      }, _react["default"].createElement("span", null, showBlock ? locale.hideText : locale.showText), this.codePen && _react["default"].createElement("a", {
+        href: this.codePen,
+        target: "_blank",
+        onClick: function onClick(e) {
+          return e.stopPropagation();
+        },
+        className: "code-pen"
+      }, "\u5728\u7EBF\u8FD0\u884C"))), cssSupportMap.map(function (source) {
         var sourceCode = _this4["".concat(source, "Code")];
 
         if (sourceCode) {
