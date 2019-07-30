@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import marked from 'marked';
-import { transform } from '@babel/standalone';
+import { transform, registerPlugin } from '@babel/standalone';
+import jsxControlStatements from 'jsx-control-statements';
 import less from 'less';
 import sass from 'sass.js';
 import prism from 'prismjs';
@@ -10,6 +11,7 @@ import Editor from '../editor';
 
 const cssSupportMap = ['less', 'scss', 'sass', 'css'];
 
+registerPlugin('jsxControlStatements', jsxControlStatements);
 //代码展示容器
 export default class Canvas extends React.Component {
   static propTypes = {
@@ -94,7 +96,10 @@ export default class Canvas extends React.Component {
   }
 
   renderSource(value) {
+
     const presets = ['react', 'es2015'];
+    const plugins = ['proposal-class-properties', 'jsxControlStatements'];
+
     new Promise((resolve) => {
       const args = ['context', 'React', 'ReactDOM'];
       const argv = [this, React, ReactDOM];
@@ -110,7 +115,8 @@ export default class Canvas extends React.Component {
         code = transform(`
            ${value.replace('mountNode', `document.getElementById('${this.playerId}')`)}
         `, {
-          presets
+          presets,
+          plugins
         }).code;
       } else {
         code = transform(`
@@ -120,7 +126,8 @@ export default class Canvas extends React.Component {
           ReactDOM.render(<Demo {...context.props} />,
           document.getElementById('${this.playerId}'))
           `, {
-          presets
+          presets,
+          plugins
         }).code;
       }
       args.push(code);

@@ -15,6 +15,8 @@ var _marked = _interopRequireDefault(require("marked"));
 
 var _standalone = require("@babel/standalone");
 
+var _jsxControlStatements = _interopRequireDefault(require("jsx-control-statements"));
+
 var _less = _interopRequireDefault(require("less"));
 
 var _sass = _interopRequireDefault(require("sass.js"));
@@ -65,7 +67,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var cssSupportMap = ['less', 'scss', 'sass', 'css']; //代码展示容器
+var cssSupportMap = ['less', 'scss', 'sass', 'css'];
+(0, _standalone.registerPlugin)('jsxControlStatements', _jsxControlStatements["default"]); //代码展示容器
 
 var Canvas =
 /*#__PURE__*/
@@ -165,6 +168,7 @@ function (_React$Component) {
       var _this3 = this;
 
       var presets = ['react', 'es2015'];
+      var plugins = ['proposal-class-properties', 'jsxControlStatements'];
       new Promise(function (resolve) {
         var args = ['context', 'React', 'ReactDOM'];
         var argv = [_this3, _react["default"], _reactDom["default"]];
@@ -183,11 +187,13 @@ function (_React$Component) {
 
         if (/ReactDOM\.render/.test(value)) {
           code = (0, _standalone.transform)("\n           ".concat(value.replace('mountNode', "document.getElementById('".concat(_this3.playerId, "')")), "\n        "), {
-            presets: presets
+            presets: presets,
+            plugins: plugins
           }).code;
         } else {
           code = (0, _standalone.transform)("\n          class Demo extends React.Component {\n             ".concat(value, "\n          }\n          ReactDOM.render(<Demo {...context.props} />,\n          document.getElementById('").concat(_this3.playerId, "'))\n          "), {
-            presets: presets
+            presets: presets,
+            plugins: plugins
           }).code;
         }
 

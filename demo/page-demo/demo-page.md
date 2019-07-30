@@ -10,6 +10,9 @@
          
 ```js
 class Demo extends React.Component{
+  state={
+    visible:true,
+  }
   render(){
     return(
         <div>
