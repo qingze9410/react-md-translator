@@ -19,8 +19,6 @@ var _jsxControlStatements = _interopRequireDefault(require("jsx-control-statemen
 
 var _less = _interopRequireDefault(require("less"));
 
-var _sass = _interopRequireDefault(require("sass.js"));
-
 var _prismjs = _interopRequireDefault(require("prismjs"));
 
 var _editor = _interopRequireDefault(require("../editor"));
@@ -67,7 +65,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var cssSupportMap = ['less', 'scss', 'sass', 'css'];
+var cssSupportMap = ['less', 'css'];
 (0, _standalone.registerPlugin)('jsxControlStatements', _jsxControlStatements["default"]); //代码展示容器
 
 var Canvas =
@@ -82,7 +80,7 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Canvas).call(this, props)); //坑位Id
 
-    _this.playerId = "player-".concat(parseInt(Math.random() * 1e9).toString(36)); //分类匹配出less/scss/js/jsx/css
+    _this.playerId = "player-".concat(parseInt(Math.random() * 1e9).toString(36)); //分类匹配出less/js/jsx/css
 
     var descriptionSource = _this.props.children.replace(/(`{3})([^`]|[^`][\s\S]*?[^`])\1(?!`)/ig, function (markdown) {
       var _markdown$match = markdown.match(/```(.*)\n?([^]+)```/),
@@ -105,18 +103,6 @@ function (_React$Component) {
 
           _less["default"].render("\n            #".concat(_this.playerId, " {\n              ").concat(code, "\n            }\n          "), function (e, compiledCode) {
             _this["".concat(trimType, "Code")] = compiledCode.css;
-          });
-
-          break;
-
-        case 'scss':
-        case 'sass':
-          _this["".concat(trimType, "CodeSource")] = (0, _marked["default"])(all);
-
-          _sass["default"].compile("\n            #".concat(_this.playerId, " {\n              ").concat(code, "\n            }\n          "), function (compiledCode) {
-            _this["".concat(trimType, "Code")] = compiledCode.text; // sass compile fix
-
-            _this.forceUpdate();
           });
 
           break;

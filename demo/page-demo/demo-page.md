@@ -25,7 +25,7 @@ class Demo extends React.Component{
 ReactDOM.render(<Demo {...context.props}/>,mountNode)
 ```
 
-```scss
+```less
 h4{
   font-size: 32px;
 }

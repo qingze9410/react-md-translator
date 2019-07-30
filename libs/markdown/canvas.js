@@ -5,11 +5,10 @@ import marked from 'marked';
 import { transform, registerPlugin } from '@babel/standalone';
 import jsxControlStatements from 'jsx-control-statements';
 import less from 'less';
-import sass from 'sass.js';
 import prism from 'prismjs';
 import Editor from '../editor';
 
-const cssSupportMap = ['less', 'scss', 'sass', 'css'];
+const cssSupportMap = ['less', 'css'];
 
 registerPlugin('jsxControlStatements', jsxControlStatements);
 //代码展示容器
@@ -27,7 +26,7 @@ export default class Canvas extends React.Component {
     super(props);
     //坑位Id
     this.playerId = `player-${parseInt(Math.random() * 1e9).toString(36)}`;
-    //分类匹配出less/scss/js/jsx/css
+    //分类匹配出less/js/jsx/css
     const descriptionSource = this.props.children.replace(/(`{3})([^`]|[^`][\s\S]*?[^`])\1(?!`)/ig, (markdown) => {
       const [all, type, code] = markdown.match(/```(.*)\n?([^]+)```/);
       const trimType = type.trim();
@@ -45,19 +44,6 @@ export default class Canvas extends React.Component {
             }
           `, (e, compiledCode) => {
             this[`${trimType}Code`] = compiledCode.css;
-          });
-          break;
-        case 'scss':
-        case 'sass':
-          this[`${trimType}CodeSource`] = marked(all);
-          sass.compile(`
-            #${this.playerId} {
-              ${code}
-            }
-          `, (compiledCode) => {
-            this[`${trimType}Code`] = compiledCode.text;
-            // sass compile fix
-            this.forceUpdate();
           });
           break;
         case 'codePen':
