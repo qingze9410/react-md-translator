@@ -1,6 +1,6 @@
 {
   "name": "react-md-translator",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "main": "es/index.js",
   "keyword": "markdown react demo",
   "author": "qingze(136786817@qq.com)",
@@ -24,8 +24,8 @@
   },
   "peerDependencies": {
     "prop-types": "> 15.5.10",
-    "react": ">= 16.1.1",
-    "react-dom": ">= 16.1.1"
+    "react": ">= 16.8.0",
+    "react-dom": ">= 16.8.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -56,8 +56,8 @@
     "node-sass": "^4.12.0",
     "prop-types": "^15.5.10",
     "raw-loader": "^0.5.1",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-hot-loader": "^4.3.11",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
